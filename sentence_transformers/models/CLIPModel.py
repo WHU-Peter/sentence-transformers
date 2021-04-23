@@ -768,7 +768,7 @@ class SimpleTokenizer(object):
     def __init__(self, bpe_path: str):
         self.byte_encoder = bytes_to_unicode()
         self.byte_decoder = {v: k for k, v in self.byte_encoder.items()}
-        with gzip.open(bpe_path, 'rb') as fIn:
+        with open(bpe_path, 'rb') as fIn:
             self.tokenizer_data = fIn.read()
         merges = self.tokenizer_data.decode("utf-8").split('\n')
         merges = merges[1:49152-256-2+1]
@@ -785,8 +785,8 @@ class SimpleTokenizer(object):
         self.pat = re.compile(r"""<\|startoftext\|>|<\|endoftext\|>|'s|'t|'re|'ve|'m|'ll|'d|[\p{L}]+|[\p{N}]|[^\s\p{L}\p{N}]+""", re.IGNORECASE)
 
     def save(self, output_path):
-        file_name = 'bpe_simple_vocab_16e6.txt.gz'
-        with gzip.open(os.path.join(output_path, file_name), 'wb') as fOut:
+        file_name = 'bpe_simple_vocab_16e6.txt'
+        with open(os.path.join(output_path, file_name), 'wb') as fOut:
             fOut.write(self.tokenizer_data)
         return file_name
 
